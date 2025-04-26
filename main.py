@@ -36,8 +36,18 @@ def few_shot_prompt() -> str:
     return prompt
 
 def safety_alignment(query: str) -> bool:
-    #TODO
+    blocked_keywords = [
+        "kill", "murder", "attack", "bomb", "weapon",
+        "suicide", "harm", "violence", "terrorist",
+        "hack", "exploit", "drugs", "racist", "sex", "porn",
+        "how to make a bomb", "school shooting", "self harm",
+    ]
+    lowered_query = query.lower()
+    for word in blocked_keywords:
+        if word in lowered_query:
+            return False
     return True
+
 
 @app.post("/generate")
 async def generate(request: Request):
