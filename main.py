@@ -83,5 +83,5 @@ async def generate(request: Request):
     logger.info(f"Query latency: {latency:.2f}s")
 
 #could use a method for only taking the end of the chain of thought
-    def extract_last_line():
-        pass  
+    def extract_last_line(response: str) -> str:
+        return response.strip().split("\n")[-1]
