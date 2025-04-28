@@ -48,6 +48,22 @@ def safety_alignment(query: str) -> bool:
             return False
     return True
 
+    # Safety check for model-generated content
+def safety_check_for_generated_content(response: str) -> str:
+    prompt = f"Here's a response: '{response}'.\n\nCan this response be used for harm or have negative impact or bad behavior? Please answer with 'Yes' or 'No'."
+
+    # Generate a safety check response
+    inputs = tokenizer(prompt, return_tensors="pt").to(device)
+    outputs = model.generate(
+        **inputs,
+        max_new_tokens=10,
+        do_sample=True,
+        top_p=0.9,
+        temperature=0.7,
+    )
+    safety_response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    return safety_response.strip().lower()
+
 
 @app.post("/generate")
 async def generate(request: Request):
