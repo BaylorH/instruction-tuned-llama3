@@ -48,7 +48,7 @@ def safety_alignment(query: str) -> bool:
             return False
     return True
 
-def safety_check_for_generated_content(response: str) -> str:
+def safety_check_for_generated_content(response: str) -> bool:
     prompt = f"Here's a response: '{response}'.\n\nCan this response be used for harm or have negative impact or bad behavior? Please answer with 'Yes' or 'No'."
 
     inputs = tokenizer(prompt, return_tensors="pt").to(device)
@@ -60,7 +60,7 @@ def safety_check_for_generated_content(response: str) -> str:
         temperature=0.7,
     )
     safety_response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    return safety_response.strip().lower()
+    return safety_response.strip().lower() == "yes" 
 
 
 @app.post("/generate")
