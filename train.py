@@ -115,7 +115,7 @@ config = TrainingArguments(
 
 # Trainer
 trainer = Trainer(
-    data_collator=batch_collator,
+    data_collator=data_collator,
     train_dataset=processed_dataset,
     model=adapted_model,
     args=config
